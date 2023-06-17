@@ -19,8 +19,8 @@ public class NoticeReg extends HttpServlet{
 			response.setCharacterEncoding("UTF-8");
 			//웹 브라우저에 UTF-8 형식으로 읽으라고 하는 것
 			response.setContentType("text/html; charset=UTF-8");
-			//웹 브라우저가 보낸 입력 값을 UTF-8 형식으로 읽어오는 것
-			request.setCharacterEncoding("UTF-8");
+			//웹 브라우저가 보낸 입력 값을 UTF-8 형식으로 읽어오는 것(필터로 적용시킬 것임)
+			//request.setCharacterEncoding("UTF-8");
 			
 			PrintWriter out = response.getWriter();
 			

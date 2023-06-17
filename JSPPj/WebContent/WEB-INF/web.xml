@@ -13,6 +13,16 @@
   	<url-pattern>/hello</url-pattern>
   </servlet-mapping> -->
   
+  <!-- characterEncodingFilter를 /* 모든 구역에 설정해둔 것이다 -->
+  <!-- <filter>
+  	<filter-name>characterEncodingFilter</filter-name>
+  	<filter-class>com.newlecture.web.filter.CharacterEncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>characterEncodingFilter</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping> -->
+  
   <display-name>JSPPj</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
