@@ -13,9 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/hello2")
 public class Nana extends HttpServlet{
 		@Override
-		protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-			PrintWriter out = resp.getWriter();
-			out.println("Hello ~~~ asdf ");
+		protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			
+			//UTF-8 형식으로 전송하는 것
+			response.setCharacterEncoding("UTF-8");
+			//웹 브라우저에 UTF-8 형식으로 읽으라고 하는 것
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			for(int i=0;i<100;++i)
+			{
+				out.println((i+1)+": 안녕 Servlet!! <br>");
+			}
 		}
 }
