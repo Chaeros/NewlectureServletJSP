@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/calc2")
 public class Calc2 extends HttpServlet{
@@ -17,6 +18,9 @@ public class Calc2 extends HttpServlet{
 			, HttpServletResponse response) throws ServletException, IOException {
 		//어플리케이션 저장소에 서블릿 값을 저장
 		ServletContext application = request.getServletContext();
+		
+		//세션을 이용하여 상태유지
+		HttpSession session = request.getSession();
 		
 		//UTF-8 형식으로 전송하는 것
 		response.setCharacterEncoding("UTF-8");
@@ -35,9 +39,11 @@ public class Calc2 extends HttpServlet{
 		
 		//값 계산
 		if(op.equals("=")) {
-			int x = (Integer)application.getAttribute("value"); //앞선 서블릿에서의 값
+			//int x = (Integer)application.getAttribute("value"); //앞선 서블릿에서의 값
+			int x = (Integer)session.getAttribute("value"); //앞선 서블릿에서의 값
 			int y = v;  // 현재 서블릿에서의 값
-			String operator = (String)application.getAttribute("op"); // 앞서 입력한 연산자
+			//String operator = (String)application.getAttribute("op"); // 앞서 입력한 연산자
+			String operator = (String)session.getAttribute("op"); // 앞서 입력한 연산자
 			
 			int result = 0;
 			if(operator.equals("+"))
@@ -49,8 +55,10 @@ public class Calc2 extends HttpServlet{
 		}
 		else //값 저장
 		{
-			application.setAttribute("value", v);
-			application.setAttribute("op", op);
+			//application.setAttribute("value", v);
+			//application.setAttribute("op", op);
+			session.setAttribute("value", v);
+			session.setAttribute("op", op);
 		}
 	}
 }
