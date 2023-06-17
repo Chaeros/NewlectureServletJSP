@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 //web.xml에서 서블릿 
-@WebServlet("/hello2")
-public class Nana extends HttpServlet{
+@WebServlet("/notice-reg")
+public class NoticeReg extends HttpServlet{
 		@Override
 		protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			
@@ -19,17 +19,16 @@ public class Nana extends HttpServlet{
 			response.setCharacterEncoding("UTF-8");
 			//웹 브라우저에 UTF-8 형식으로 읽으라고 하는 것
 			response.setContentType("text/html; charset=UTF-8");
+			//웹 브라우저가 보낸 입력 값을 UTF-8 형식으로 읽어오는 것
+			request.setCharacterEncoding("UTF-8");
+			
 			PrintWriter out = response.getWriter();
 			
-			String cnt_ = request.getParameter("cnt");
+			String title = request.getParameter("title");
+			String content = request.getParameter("content");
 			
-			int cnt = 100;
-			if(cnt_ != null && !cnt_.contentEquals(""))
-				cnt = Integer.parseInt(cnt_);
+			out.println(title);
+			out.println(content);
 			
-			for(int i=0;i<cnt;++i)
-			{
-				out.println((i+1)+": 안녕 Servlet!! <br>");
-			}
 		}
 }
