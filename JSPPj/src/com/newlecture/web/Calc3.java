@@ -71,6 +71,7 @@ public class Calc3 extends HttpServlet{
 		if(operator!=null && operator.equals("C"))
 			expCookie.setMaxAge(0); 
 		
+		expCookie.setPath("/");
 		//이번 서블릿 실행 후 표기해줄 페이지를 지정
 		response.addCookie(expCookie);
 		response.sendRedirect("calcpage");
