@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-//매핑되는 주소들에 대해 해당 필터를 적용시킴, xml 작성 필요없음
+//매핑되는 주소들에 대해 해당 필터를 적용시킴, xml 작성 필요없음, jsp 파일에만 필터 적용시켜야 css파일에 적용이 안되어 이미지 안 짤림
 @WebFilter("/*")
 public class CharacterEncodingFilter implements Filter {
 
