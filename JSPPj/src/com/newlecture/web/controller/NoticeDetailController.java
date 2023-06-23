@@ -70,7 +70,7 @@ public class NoticeDetailController extends HttpServlet{
 		// 현재 홈 디렉터리가 WebContent
 		// notice에 있는 detail.jsp를 요청하면서 현재 사용하고 있는 저장소의 위치인
 		// request와 출력도구 response를 이어서 공유 사용할 수 있게끔 전송함
-		request.getRequestDispatcher("/notice/detail.jsp")
+		request.getRequestDispatcher("/WEB-INF/view/notice/detail.jsp")
 			   .forward(request, response);
 	}
 }

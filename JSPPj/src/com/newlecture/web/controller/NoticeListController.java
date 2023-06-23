@@ -60,7 +60,8 @@ public class NoticeListController extends HttpServlet{
 		}
 		
 		request.setAttribute("list", list);
-		request.getRequestDispatcher("/notice/list.jsp")
+		//WEB-INF라는 디렉토리는 웹에서 절대로 사용자가 요청할 수 없는 폴더이다. 서버에서만 호출 가능
+		request.getRequestDispatcher("/WEB-INF/view/notice/list.jsp")
 		   .forward(request, response);
 	}
 }
