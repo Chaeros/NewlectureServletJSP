@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.newlecture.web.entity.Notice;
+
 // @WebServlet("/notice/detail")을 통해서 detail.jsp가 실행됨
 @WebServlet("/notice/detail")
 public class NoticeDetailController extends HttpServlet{
@@ -42,6 +44,10 @@ public class NoticeDetailController extends HttpServlet{
 			int hit=rs.getInt("HIT");
 			String files=rs.getString("FILES");
 			String content=rs.getString("CONTENT");
+			
+			Notice notice = new Notice(id,title,regdate,writerId,hit,files,content);
+			// 객체를 request로 전송한다.
+			request.setAttribute("n", notice);
 			
 			request.setAttribute("title",title);
 			request.setAttribute("regdate",regdate);
