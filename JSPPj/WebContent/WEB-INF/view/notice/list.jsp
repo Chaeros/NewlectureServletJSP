@@ -1,8 +1,7 @@
-<%@page import="com.newlecture.web.entity.Notice"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 
@@ -188,7 +187,8 @@
 						<!-- Controller의 주소로 href를 변경해야한다. -->
 						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title}</a></td>
 						<td>${n.writerId}</td>
-						<td>${n.regdate}</td>
+						<!-- 분이 m이기떄문에 월은 대문자로 써야함 -->
+						<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${n.regdate}"></fmt:formatDate></td>
 						<td>${n.hit}</td>
 					</tr>
 					</c:forEach>
@@ -204,22 +204,34 @@
 			</div>
 
 			<div class="margin-top align-center pager">	
+			
+	<!-- 임시변수 사용할 때 쓰는 태그 -->
+	<c:set var="page" value="${(param.p==null)?1:param.p}"/>
+	<c:set var="startNum" value="${page-(page-1)%5}"/>
+	<c:set var="lastNum" value="23"/>
 		
 	<div>
-		
-		
-		<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
-		
+		<c:if test="${startNum>1}">
+			<a href="?p=${startNum-5}&t=&q=" class="btn btn-prev">이전</a>
+		</c:if>
+		<c:if test="${startNum<=1}">
+			<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
+		</c:if>
 	</div>
+	
 	<ul class="-list- center">
-		<li><a class="-text- orange bold" href="?p=1&t=&q=" >1</a></li>
-				
+		<c:forEach var="i" begin="0" end="4">
+		<li><a class="-text- orange bold" href="?p=${startNum+i}&t=&q=" >${startNum+i}</a></li>
+		</c:forEach>
 	</ul>
 	<div>
-		
-		
-			<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
-		
+		<!-- JSTL에는 else 문법이 없다 -->
+		<c:if test="${startNum+5<lastNum}">
+			<a href="?p=${startNum+5}&t=&q=" class="btn btn-next"">다음</a>
+		</c:if>
+		<c:if test="${startNum+5>=lastNum}">
+		<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
+		</c:if>
 	</div>
 	
 			</div>
