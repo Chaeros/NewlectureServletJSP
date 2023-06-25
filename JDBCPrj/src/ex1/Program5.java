@@ -13,17 +13,20 @@ public class Program5 {
 			int menu = console.inputNoticeMenu();
 			
 			switch(menu) {
-			case 1:
+			case 1: // 상세조회
 				break;
-			case 2:
+			case 2: // 이전 페이지
 				console.movePrevList();
 				break;
-			case 3:
+			case 3: // 다음 페이지
 				console.moveNextList();
 				break;
-			case 4:
+			case 4: // 글쓰기
 				break;
-			case 5:
+			case 5: // 검색
+				console.inputSearchWord();
+				break;
+			case 6: // 종료
 				System.out.println("프로그램을 종료합니다.");
 				break EXIT;
 			default:

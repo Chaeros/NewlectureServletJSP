@@ -18,18 +18,20 @@ public class NoticeService {
 	private String pwd = "0000";
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	
-	public List<Notice> getList(int page) throws ClassNotFoundException, SQLException{
+	public List<Notice> getList(int page, String field, String query) throws ClassNotFoundException, SQLException{
 		
 		int start=1+(page-1)*10;
 		int end=10*page;
 		
-		String sql = "SELECT * FROM NOTICE_VIEW WHERE NUM BETWEEN ? AND ?";
+		//field를 ?와 st.setString으로 나타내지 않는 이유는, 그렇게하면 값 양끝에 따옴표가 붙기떄문
+		String sql = "SELECT * FROM NOTICE_VIEW WHERE "+field+" LIKE ? AND NUM BETWEEN ? AND ?";
 		
 		Class.forName(driver);
 		Connection con = DriverManager.getConnection(url,uid,pwd);
 		PreparedStatement st = con.prepareStatement(sql);
-		st.setInt(1, start);
-		st.setInt(2, end);
+		st.setString(1, "%"+query+"%");
+		st.setInt(2, start);
+		st.setInt(3, end);
 		ResultSet rs = st.executeQuery();
 		
 		List<Notice> list = new ArrayList<Notice>();
