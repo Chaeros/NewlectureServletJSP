@@ -18,14 +18,19 @@ public class NoticeService {
 	private String pwd = "0000";
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	
-	public List<Notice> getList() throws ClassNotFoundException, SQLException{
+	public List<Notice> getList(int page) throws ClassNotFoundException, SQLException{
 		
-		String sql = "SELECT * FROM NOTICE WHERE HIT>10";
+		int start=1+(page-1)*10;
+		int end=10*page;
+		
+		String sql = "SELECT * FROM NOTICE_VIEW WHERE NUM BETWEEN ? AND ?";
 		
 		Class.forName(driver);
 		Connection con = DriverManager.getConnection(url,uid,pwd);
-		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery(sql);
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setInt(1, start);
+		st.setInt(2, end);
+		ResultSet rs = st.executeQuery();
 		
 		List<Notice> list = new ArrayList<Notice>();
 		
@@ -49,6 +54,25 @@ public class NoticeService {
 		con.close();
 		
 		return list;
+	}
+	
+	public int getCount() throws ClassNotFoundException, SQLException {
+		int count=0;
+		String sql = "SELECT COUNT(ID) COUNT FROM NOTICE";
+		
+		Class.forName(driver);
+		Connection con = DriverManager.getConnection(url,uid,pwd);
+		Statement st = con.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		if(rs.next())
+			count=rs.getInt("COUNT");
+		
+		rs.close();
+		st.close();
+		con.close();
+		
+		return count;
 	}
 	
 	public int insert(Notice notice) throws ClassNotFoundException, SQLException {
@@ -127,4 +151,6 @@ public class NoticeService {
 		con.close();
 		return result;
 	}
+
+
 }
