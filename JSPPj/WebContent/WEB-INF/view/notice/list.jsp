@@ -189,7 +189,7 @@
 					<tr>
 						<td>${n.id}</td>
 						<!-- Controller의 주소로 href를 변경해야한다. -->
-						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title}</a></td>
+						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title}</a><span>[${n.cmtCount }]</span></td>
 						<td>${n.writerId}</td>
 						<!-- 분이 m이기떄문에 월은 대문자로 써야함 -->
 						<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss" value="${n.regdate}"></fmt:formatDate></td>

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.newlecture.web.entity.Notice;
+import com.newlecture.web.entity.NoticeView;
 
 public class NoticeService {
 	static String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
@@ -18,22 +19,46 @@ public class NoticeService {
 	static String pwd = "0000";
 	static String driver = "oracle.jdbc.driver.OracleDriver";
 	
-	public List<Notice> getNoticeList(){
+	public int removeNotice(int[] ids){
+		return 0;
+	}
+	
+	public int pubNoticeAll(int[] ids) {
+		return 0;
+	}
+	
+	public int insertNotice(Notice notice){
+		return 0;
+	}
+	
+	public int deleteNotice(int id){
+		return 0;
+	}
+	
+	public int updateNotice(Notice notice){
+		return 0;
+	}
+	
+	public List<Notice> getNoticeNewstList(){
+		return null;
+	}
+	
+	public List<NoticeView> getNoticeList(){
 		
 		return getNoticeList("title","",1);
 	}
 	
-	public List<Notice> getNoticeList(int page){
+	public List<NoticeView> getNoticeList(int page){
 		
 		return getNoticeList("title","",page);
 	}
 	
-	public List<Notice> getNoticeList(String field, String query, int page){
-		List<Notice> list = new ArrayList<>();
+	public List<NoticeView> getNoticeList(String field, String query, int page){
+		List<NoticeView> list = new ArrayList<>();
 		
 		String sql="SELECT * FROM( " + 
 				"    SELECT ROWNUM NUM, N.* " + 
-				"    FROM (SELECT * FROM NOTICE WHERE "+field+" LIKE ? ORDER BY REGDATE DESC) N) " + 
+				"    FROM (SELECT * FROM NOTICE_VIEW WHERE "+field+" LIKE ? ORDER BY REGDATE DESC) N) " + 
 				"WHERE NUM BETWEEN ? AND ?";
 
 		try {
@@ -52,9 +77,17 @@ public class NoticeService {
 				String writerId=rs.getString("WRITER_ID");			
 				int hit=rs.getInt("HIT");
 				String files=rs.getString("FILES");
-				String content=rs.getString("CONTENT");
+				//String content=rs.getString("CONTENT");
+				int cmtCount=rs.getInt("CMT_COUNT");
 				
-				Notice notice = new Notice(id,title,regdate,writerId,hit,files,content);
+				NoticeView notice = new NoticeView(id,
+						title,
+						regdate,
+						writerId,
+						hit,
+						files,
+						//content,
+						cmtCount);
 				list.add(notice);
 				
 			}
