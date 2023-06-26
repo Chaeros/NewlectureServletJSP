@@ -17,51 +17,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.newlecture.web.entity.Notice;
+import com.newlecture.web.service.NoticeService;
 
 @WebServlet("/notice/list")
 public class NoticeListController extends HttpServlet{
-	private String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
-	private String uid = "newlec";
-	private String pwd = "0000";
-	private String driver = "oracle.jdbc.driver.OracleDriver";
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Notice> list = new ArrayList<>();
-	
-		String sql = "Select * from notice";
-
-		try {
-			Class.forName(driver);
-			Connection con=DriverManager.getConnection(url, uid, pwd);
-			Statement st=con.createStatement();
-			ResultSet rs=st.executeQuery(sql);
-
-			while(rs.next()){
-				int id=rs.getInt("ID");
-				String title=rs.getString("TITLE");
-				Date regdate=rs.getDate("REGDATE");
-				String writerId=rs.getString("WRITER_ID");			
-				int hit=rs.getInt("HIT");
-				String files=rs.getString("FILES");
-				String content=rs.getString("CONTENT");
-				
-				Notice notice = new Notice(id,title,regdate,writerId,hit,files,content);
-				list.add(notice);
-				
-			}
-
-			rs.close();
-			st.close();
-			con.close();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		String field_=request.getParameter("f");
+		String query_=request.getParameter("q");
+		// page에 int를 사용하면 안되는데, 이유는 아무 입력이 없는 경우 null과 비교했을 때 오류가 발생하기 때문
+		// 따라서 빈문자열을 입력할 수 있는 String 타입을 사용한다.
+		String page_=request.getParameter("p");
+		
+		String field="TITLE";
+		if(field_!=null && !field_.equals(""))
+			field=field_;
+		
+		String query="";
+		if(query_!=null && !query_.equals(""))
+			query=query_;
+		
+		int page=1;
+		if(page_!=null && !page_.equals(""))
+			page=Integer.parseInt(page_);
+		
+		NoticeService service = new NoticeService();
+		List<Notice> list = service.getNoticeList(field,query,page);
+		int count = service.getNoticeCount(field,query);
 		
 		request.setAttribute("list", list);
+		request.setAttribute("count",count);
+		
 		//WEB-INF라는 디렉토리는 웹에서 절대로 사용자가 요청할 수 없는 폴더이다. 서버에서만 호출 가능
 		request.getRequestDispatcher("/WEB-INF/view/notice/list.jsp")
 		   .forward(request, response);

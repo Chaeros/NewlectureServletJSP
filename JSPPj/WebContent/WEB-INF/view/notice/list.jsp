@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 
@@ -151,11 +152,14 @@
 						<legend class="hidden">공지사항 검색 필드</legend>
 						<label class="hidden">검색분류</label>
 						<select name="f">
-							<option  value="title">제목</option>
-							<option  value="writerId">작성자</option>
+							<!-- 검색어 입력후 버튼 눌러도  검색분류 상태 유지-->
+							<option ${(param.f=="title")?"selected":"" } value="title">제목</option>
+							<option ${(param.f=="writer_Id")?"selected":"" } value="writer_Id">작성자</option>
 						</select> 
 						<label class="hidden">검색어</label>
-						<input type="text" name="q" value=""/>
+						<!-- 검색어 입력후 버튼 눌러도 입력한 텍스트가 남아있게함 (아래코드) -->
+						<input type="text" name="q" value="${param.q}"/>
+						<!-- list?f=title&q=a 형식으로 보냄 -->
 						<input class="btn btn-search" type="submit" value="검색" />
 					</fieldset>
 				</form>
@@ -198,17 +202,20 @@
 				</table>
 			</div>
 			
+			<!-- 임시변수 사용할 때 쓰는 태그 -->
+			<c:set var="page" value="${(param.p==null)?1:param.p}"/>
+			<c:set var="startNum" value="${page-(page-1)%5}"/>
+			<!-- Math.ceil(실수) : 올림(실수로 반환 n.0), Math.floor(실수) : 내림(실수로 반환 n.0) -->
+			<!-- fn:substringBefore(문자열,'구분자') : 문자열을 구분자로 나눔 -->
+			<c:set var="lastNum" value="${fn:substringBefore(Math.ceil(count/10),'.') }"/>
+			
 			<div class="indexer margin-top align-right">
 				<h3 class="hidden">현재 페이지</h3>
-				<div><span class="text-orange text-strong">1</span> / 1 pages</div>
+				<!-- empty연산자는 내부가 null이거나 빈문자열이면 참이다 -->
+				<div><span class="text-orange text-strong">${(empty param.p)?1:param.p }</span> / ${lastNum } pages</div>
 			</div>
 
 			<div class="margin-top align-center pager">	
-			
-	<!-- 임시변수 사용할 때 쓰는 태그 -->
-	<c:set var="page" value="${(param.p==null)?1:param.p}"/>
-	<c:set var="startNum" value="${page-(page-1)%5}"/>
-	<c:set var="lastNum" value="23"/>
 		
 	<div>
 		<c:if test="${startNum>1}">
@@ -220,16 +227,20 @@
 	</div>
 	
 	<ul class="-list- center">
+		<!-- page는 15줄 정도 위에 정의되어있다. -->
 		<c:forEach var="i" begin="0" end="4">
-		<li><a class="-text- orange bold" href="?p=${startNum+i}&t=&q=" >${startNum+i}</a></li>
+		<c:if test="${(startNum+i)<=lastNum }">
+		<!-- el내부 orange를 큰 따옴표가 아닌 작은 따옴표로 묶은 이유는 큰따옴표 사용시 앞뒤로 큰따옴표 중첩으로 파싱 오류가 발생할 수 있기 때문이다. -->
+		<li><a class="-text- ${(page==(startNum+i))?'orange':'' } bold" href="?p=${startNum+i}&f=${param.f }&q=${param.q}" >${startNum+i}</a></li>
+		</c:if>
 		</c:forEach>
 	</ul>
 	<div>
 		<!-- JSTL에는 else 문법이 없다 -->
-		<c:if test="${startNum+5<lastNum}">
+		<c:if test="${startNum+5<=lastNum}">
 			<a href="?p=${startNum+5}&t=&q=" class="btn btn-next"">다음</a>
 		</c:if>
-		<c:if test="${startNum+5>=lastNum}">
+		<c:if test="${startNum+5>lastNum}">
 		<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
 		</c:if>
 	</div>
