@@ -20,18 +20,19 @@ import com.newlecture.web.entity.Notice;
 
 @WebServlet("/notice/list")
 public class NoticeListController extends HttpServlet{
+	private String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
+	private String uid = "newlec";
+	private String pwd = "0000";
+	private String driver = "oracle.jdbc.driver.OracleDriver";
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Notice> list = new ArrayList<>();
-		
-		String USERNAME = "root";//DBMS접속 시 아이디
-		String PASSWORD = "0000";//DBMS접속 시 비밀번호
-		String URL = "jdbc:mysql://localhost:3306/newlecture";//DBMS접속할 db명
+	
 		String sql = "Select * from notice";
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection con=DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			Class.forName(driver);
+			Connection con=DriverManager.getConnection(url, uid, pwd);
 			Statement st=con.createStatement();
 			ResultSet rs=st.executeQuery(sql);
 
@@ -46,6 +47,7 @@ public class NoticeListController extends HttpServlet{
 				
 				Notice notice = new Notice(id,title,regdate,writerId,hit,files,content);
 				list.add(notice);
+				
 			}
 
 			rs.close();

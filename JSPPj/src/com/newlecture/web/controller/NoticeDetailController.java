@@ -23,14 +23,15 @@ public class NoticeDetailController extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int id=Integer.parseInt(request.getParameter("id"));
 
-		String USERNAME = "root";//DBMS접속 시 아이디
-		String PASSWORD = "0000";//DBMS접속 시 비밀번호
-		String URL = "jdbc:mysql://localhost:3306/newlecture";//DBMS접속할 db명
+		String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
+		String uid = "newlec";
+		String pwd = "0000";
+		String driver = "oracle.jdbc.driver.OracleDriver";
 		String sql = "Select * from notice where id=?";
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection con=DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			Class.forName(driver);
+			Connection con=DriverManager.getConnection(url, uid, pwd);
 			PreparedStatement st=con.prepareStatement(sql);
 			st.setInt(1, id);
 
@@ -45,16 +46,18 @@ public class NoticeDetailController extends HttpServlet{
 			String files=rs.getString("FILES");
 			String content=rs.getString("CONTENT");
 			
+			System.out.println(files);
+			
 			Notice notice = new Notice(id,title,regdate,writerId,hit,files,content);
 			// 객체를 request로 전송한다.
 			request.setAttribute("n", notice);
 			
-			request.setAttribute("title",title);
-			request.setAttribute("regdate",regdate);
-			request.setAttribute("writerId",writerId);
-			request.setAttribute("hit",hit);
-			request.setAttribute("files",files);
-			request.setAttribute("content",content);
+//			request.setAttribute("title",title);
+//			request.setAttribute("regdate",regdate);
+//			request.setAttribute("writerId",writerId);
+//			request.setAttribute("hit",hit);
+//			request.setAttribute("files",files);
+//			request.setAttribute("content",content);
 
 			rs.close();
 			st.close();

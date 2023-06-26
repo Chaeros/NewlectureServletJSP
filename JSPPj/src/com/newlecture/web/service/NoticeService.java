@@ -20,8 +20,8 @@ public class NoticeService {
 		return null;
 	}
 	
-	public int geNoticeCount() {
-		return 0;
+	public int getNoticeCount() {
+		return getNoticeCount("title","");
 	}
 	
 	public int getNoticeCount(String field, String query) {

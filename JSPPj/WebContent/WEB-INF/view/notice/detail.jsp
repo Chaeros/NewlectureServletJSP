@@ -172,7 +172,7 @@
 									<th>첨부파일</th>
 									<td colspan="3"style="text-align:Left; text-indent:10">
 										<c:forTokens var="fileName" items="${n.files}" delims="," varStatus="st">
-											<!-- function jstl은 아래와 같이 사용이 가능하다람쥐 -->
+											<!-- function jstl은 아래와 같이 사용이 가능하다 -->
 											<c:set var="style" value=""/>
 											<c:if test="${fn:endsWith(fileName, '.zip')}">
 												<c:set var="style" value="font-weight:bold; color:red"/>

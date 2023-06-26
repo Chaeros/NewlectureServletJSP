@@ -13,7 +13,7 @@ import java.util.List;
 import com.newlecture.app.entity.Notice;
 
 public class NoticeService {
-	private String url = "jdbc:oracle:thin:@118.42.165.226:1521/xepdb1";
+	private String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
 	private String uid = "newlec";
 	private String pwd = "0000";
 	private String driver = "oracle.jdbc.driver.OracleDriver";
