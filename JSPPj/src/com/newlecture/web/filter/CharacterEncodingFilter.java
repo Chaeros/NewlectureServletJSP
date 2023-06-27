@@ -31,11 +31,11 @@ public class CharacterEncodingFilter implements Filter {
 		request.setCharacterEncoding("UTF-8");
 		
 		//다음 필터나 서블릿이 실행되기 전에 before filter 출력
-		System.out.println("before filter");
+		//System.out.println("before filter");
 		//조건 검사를 통해 다음 필터나 서블릿을 실행시키는 함수
 		chain.doFilter(request, response);
 		//다음 필터나 서블릿이 실행된 후 after filter 출력
-		System.out.println("after filter");
+		//System.out.println("after filter");
 	}
 
 	//기존보다 더 추가된 추상 메소드

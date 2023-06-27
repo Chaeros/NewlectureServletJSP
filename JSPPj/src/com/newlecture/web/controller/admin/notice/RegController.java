@@ -50,7 +50,7 @@ public class RegController extends HttpServlet{
 		Collection<Part> parts = request.getParts();
 		StringBuilder builder = new StringBuilder();
 		for(Part p : parts) {
-			if(!p.getName().equals("file")) continue;
+			if(!p.getName().equals("file") || p.getSize()==0) continue;
 			
 			Part filePart = p;
 			String fileName = filePart.getSubmittedFileName();
@@ -62,6 +62,11 @@ public class RegController extends HttpServlet{
 			//현재 웹루트를 통한 상대경로를 넘겨주면, 아래 함수를 통해 실제 절대 경로를 반환해준다.
 			String realPath = request.getServletContext().getRealPath("/upload");
 			System.out.println(realPath);
+			
+			// 경로상에 있는 폴더가 없는 경우 생성하는 역할 수행(mkdirs쓰면 경로 상 없는 모든 폴더 생성)
+			File path = new File(realPath);
+			if(!path.exists())
+				path.mkdirs();
 			 
 			//현재 시스템(os)이 갖고 있는 경로 구분법을 자동으로 찾아서 대입시켜준다. File.separator
 			String filePath = realPath+ File.separator+fileName;
