@@ -28,7 +28,32 @@ public class NoticeService {
 	}
 	
 	public int insertNotice(Notice notice){
-		return 0;
+		int result=0;
+		
+		String sql="INSERT INTO NOTICE(TITLE, CONTENT, WRITER_ID, PUB, REGDATE) VALUES(?,?,?,?,SYSDATE)";
+		
+		try {
+			Class.forName(driver);
+			Connection con=DriverManager.getConnection(url, uid, pwd);
+			PreparedStatement st=con.prepareStatement(sql);
+			st.setString(1, notice.getTitle());
+			st.setString(2, notice.getContent());
+			st.setString(3, notice.getWriterId());
+			st.setBoolean(4, notice.getPub());
+			//update한 것은 업데이트한 튜플의 수를 반환한다
+			result = st.executeUpdate();
+
+			st.close();
+			con.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	public int deleteNotice(int id){
@@ -79,6 +104,7 @@ public class NoticeService {
 				String files=rs.getString("FILES");
 				//String content=rs.getString("CONTENT");
 				int cmtCount=rs.getInt("CMT_COUNT");
+				boolean pub = rs.getBoolean("PUB");
 				
 				NoticeView notice = new NoticeView(id,
 						title,
@@ -86,6 +112,7 @@ public class NoticeService {
 						writerId,
 						hit,
 						files,
+						pub,
 						//content,
 						cmtCount);
 				list.add(notice);
@@ -165,8 +192,9 @@ public class NoticeService {
 				int hit=rs.getInt("HIT");
 				String files=rs.getString("FILES");
 				String content=rs.getString("CONTENT");
+				boolean pub = rs.getBoolean("PUB");
 				
-				notice = new Notice(nid,title,regdate,writerId,hit,files,content);
+				notice = new Notice(nid,title,regdate,writerId,hit,files,content,pub);
 				
 			}
 
@@ -209,8 +237,9 @@ public class NoticeService {
 				int hit=rs.getInt("HIT");
 				String files=rs.getString("FILES");
 				String content=rs.getString("CONTENT");
+				boolean pub = rs.getBoolean("PUB");
 				
-				notice = new Notice(nid,title,regdate,writerId,hit,files,content);
+				notice = new Notice(nid,title,regdate,writerId,hit,files,content,pub);
 				
 			}
 
@@ -250,8 +279,9 @@ public class NoticeService {
 				int hit=rs.getInt("HIT");
 				String files=rs.getString("FILES");
 				String content=rs.getString("CONTENT");
+				boolean pub = rs.getBoolean("PUB");
 				
-				notice = new Notice(nid,title,regdate,writerId,hit,files,content);
+				notice = new Notice(nid,title,regdate,writerId,hit,files,content,pub);
 				
 			}
 
@@ -267,5 +297,39 @@ public class NoticeService {
 		}
 		
 		return notice;
+	}
+
+	public int deleteNoticeAll(int[] ids) {
+
+		int result=0;
+		
+		String params="";
+		for(int i=0;i<ids.length;i++)
+		{
+			params+=ids[i];
+			if(i<ids.length-1)
+				params+=",";
+		}
+		String sql="DELETE NOTICE WHERE ID IN ("+params+")";
+		
+		try {
+			Class.forName(driver);
+			Connection con=DriverManager.getConnection(url, uid, pwd);
+			Statement st=con.createStatement();
+			
+			//update한 것은 업데이트한 튜플의 수를 반환한다
+			result = st.executeUpdate(sql);
+
+			st.close();
+			con.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

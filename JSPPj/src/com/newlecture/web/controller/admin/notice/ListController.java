@@ -20,7 +20,7 @@ import com.newlecture.web.entity.Notice;
 import com.newlecture.web.entity.NoticeView;
 import com.newlecture.web.service.NoticeService;
 
-@WebServlet("/admin/notice/list")
+@WebServlet("/admin/board/notice/list")
 public class ListController extends HttpServlet{
 	// url이 있지만 받아 줄 수 없는 메소드가 호출되면 405
 	// 애초에 url이 없으면 404
@@ -38,10 +38,18 @@ public class ListController extends HttpServlet{
 				System.out.printf("open id : %s\n",openId);
 			break;
 		case "일괄삭제":
-			for(String delId:delIds)
-				System.out.printf("del id : %s\n",delId);
+			NoticeService service = new NoticeService();
+			int[] ids = new int[delIds.length];
+			for(int i=0;i<delIds.length;i++)
+				ids[i]=Integer.parseInt(delIds[i]);
+			
+			int result = service.deleteNoticeAll(ids);
 			break;
-		}		
+		}
+		
+		//doGet 메소드 재요청하여 호출시킴, 따라서 doGet 맨 밑줄의 Dispatcher를 통해 페이지 실행시킨다.
+		//sendRedirect : 다른 페이지로 이동시킴
+		response.sendRedirect("list");
 	}
 	
 	@Override
